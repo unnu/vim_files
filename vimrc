@@ -1,4 +1,6 @@
+let mapleader = ","
 " are we on a mac?
+
 if has("unix")
   let s:uname = system("uname")
   if s:uname == "Darwin\n"
@@ -16,8 +18,6 @@ call vundle#rc()
 
 Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-rails.git'
-Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'vim-scripts/YankRing.vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'ddollar/nerdcommenter'
@@ -35,9 +35,12 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'skalnik/vim-vroom'
 Bundle 'mattn/zencoding-vim'
 Bundle 'tpope/vim-fugitive'
+Bundle 'kien/ctrlp.vim'
 
 " Powerline
 let g:Powerline_symbols = 'fancy'
+let g:Powerline_theme="skwp"
+let g:Powerline_colorscheme="skwp"
 
 set modelines=0
 
@@ -47,6 +50,7 @@ set encoding=utf-8 " Encoding to UTF-8
 
 " Whitespace and syntax stuff
 syntax on
+let &t_Co=256 " tell vim terminal has 256 colors
 color hardcore
 set nowrap
 set tabstop=2
@@ -56,6 +60,10 @@ set expandtab
 set backspace=indent,eol,start
 set autoindent
 set list listchars=tab:\ \ ,trail:·
+
+" Solarized
+"set background=dark
+"colorscheme solarized
 
 filetype plugin indent on " indent depends on filetype
 filetype plugin on
@@ -141,12 +149,8 @@ let g:syntastic_enable_signs=1
 let g:syntastic_quiet_warnings=1
 " supertab
 " let g:SuperTabDefaultCompletionType = "context"
-" Command-T
-let g:CommandTMaxHeight=20
-map <leader>t :CommandTFlush<cr>\|:CommandT<cr>
-map <leader>f :CommandT<cr>
-map <leader>gf :CommandTFlush<cr>\|:CommandT %%<cr>
-map <leader>a :CommandT app/assets/javascripts/<cr>
+" CrtlP
+map <leader>t :CtrlP<cr>
 " YankRing
 nnoremap <silent> <leader>z :YRShow<CR>
 
@@ -162,3 +166,4 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
