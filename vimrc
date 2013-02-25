@@ -24,9 +24,7 @@ Bundle 'ddollar/nerdcommenter'
 Bundle 'tsaleh/vim-align'
 Bundle 'tpope/vim-repeat'
 Bundle 'ervandew/supertab'
-Bundle 'oscarh/vimerl'
 Bundle 'tpope/vim-rails'
-Bundle 'altercation/vim-colors-solarized'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'vim-scripts/Rename2'
@@ -36,10 +34,11 @@ Bundle 'skalnik/vim-vroom'
 Bundle 'mattn/zencoding-vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'kien/ctrlp.vim'
+Bundle 'rorymckinley/vim-symbols-strings'
+Bundle 'elubow/cql-vim'
 
 " Powerline
 let g:Powerline_symbols = 'fancy'
-let g:Powerline_theme="skwp"
 let g:Powerline_colorscheme="skwp"
 
 set modelines=0
@@ -47,10 +46,10 @@ set modelines=0
 set number " line numbers
 set ruler
 set encoding=utf-8 " Encoding to UTF-8
+let &t_Co=256 " tell vim terminal has 256 colors
 
 " Whitespace and syntax stuff
 syntax on
-let &t_Co=256 " tell vim terminal has 256 colors
 color hardcore
 set nowrap
 set tabstop=2
@@ -60,10 +59,6 @@ set expandtab
 set backspace=indent,eol,start
 set autoindent
 set list listchars=tab:\ \ ,trail:·
-
-" Solarized
-"set background=dark
-"colorscheme solarized
 
 filetype plugin indent on " indent depends on filetype
 filetype plugin on
@@ -80,6 +75,7 @@ set wildmode=list:longest
 set guifont="Monaco for Powerline":h12
 set laststatus=2 " always display the status line
 set showcmd
+set scrolloff=3 " minimum lines to keep above and below cursor
 
 " Search
 set ignorecase " search case insensitive unless...
@@ -93,6 +89,15 @@ nnoremap / /\v
 vnoremap / /\v
 
 " Movement
+" Disable arrow keys for movement. Stick to hjkl
+inoremap  <Up>     <ESC>:<UP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     :<UP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
 " Have screen-line j/k instead of file-line
 nnoremap j gj
 nnoremap k gk
@@ -103,16 +108,16 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-noremap <S-J> <C-W>j<C-W>_
-noremap <S-K> <C-W>k<C-W>_
-noremap <S-L> <C-W>l<C-W>_
-noremap <S-H> <C-W>h<C-W>_
 " make backtick behave like ' for marks
-nnoremap ` '
+"nnoremap ` '
+
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
 
 " Filetypes
 au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,config.ru}    set ft=ruby
-au BufNewFile,BufRead *.json set ft=javascript
+au BufRead,BufNewFile *.json set ft=javascript
+au BufRead,BufNewFile *.cql set syntax=cql
 
 if isMac
   " copy stuff to the macs clipboard
@@ -142,6 +147,9 @@ endif
 " MacVIM shift+arrow-keys behavior (required in .vimrc)
 let macvim_hig_shift_movement = 1
 
+" fugitive configuration
+nnoremap <C-g> :Gbrowse<CR>
+nnoremap <C-b> :Gblame<CR>
 " Plugins
 " Syntastic
 " Enable syntastic syntax checking
@@ -151,6 +159,8 @@ let g:syntastic_quiet_warnings=1
 " let g:SuperTabDefaultCompletionType = "context"
 " CrtlP
 map <leader>t :CtrlP<cr>
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_user_command = "find %s -type f | egrep -v '/\.(git|hg|svn)|solr|tmp/'"
 " YankRing
 nnoremap <silent> <leader>z :YRShow<CR>
 
@@ -166,4 +176,3 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
